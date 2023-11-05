@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -52,8 +54,16 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   double _currentSliderValue = 170;
 
-  Color inActiveColor = Color(0xFF2E2E3B);
-  Color activeColor = Color(0xFF3E4164);
+  Color inActiveColor = const Color(0xFF2E2E3B);
+  Color activeColor = const Color(0xFF3E4164);
+
+  //tandalty == 0 is Male,tandaldy == 1 is Female
+  int tandaldy = 1;
+
+  Jynys jynys = Jynys.ayal;
+
+  int weight = 42;
+  int age = 15;
 
   @override
   Widget build(BuildContext context) {
@@ -72,16 +82,30 @@ class _MyHomePageState extends State<MyHomePage> {
                 child: Row(
                   children: [
                     _buildGender(
+                        onTap: () {
+                          log('Erkek tandaldy');
+                          setState(() {
+                            jynys = Jynys.erkek;
+                          });
+                        },
                         context: context,
                         icon: FontAwesomeIcons.mars,
                         text: 'Male'.toUpperCase(),
-                        color: activeColor),
+                        color:
+                            jynys == Jynys.erkek ? activeColor : inActiveColor),
                     const SizedBox(width: 22),
                     _buildGender(
+                        onTap: () {
+                          log('Ayal tandaldy');
+                          setState(() {
+                            jynys = Jynys.ayal;
+                          });
+                        },
                         context: context,
                         icon: FontAwesomeIcons.venus,
                         text: 'Female'.toUpperCase(),
-                        color: inActiveColor),
+                        color:
+                            jynys == Jynys.ayal ? activeColor : inActiveColor),
                   ],
                 ),
               ),
@@ -103,7 +127,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       children: [
                         Text(
                           _currentSliderValue.round().toString().toUpperCase(),
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 40,
                             fontWeight: FontWeight.bold,
                           ),
@@ -111,7 +135,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         const SizedBox(
                           width: 5,
                         ),
-                        Text('cm'),
+                        const Text('cm'),
                       ],
                     ),
                     SliderTheme(
@@ -155,7 +179,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         children: [
                           Text('Weight'.toUpperCase()),
                           Text(
-                            '60',
+                            weight.toString(),
                             style: TextStyle(
                               fontSize: 40,
                               fontWeight: FontWeight.bold,
@@ -165,8 +189,15 @@ class _MyHomePageState extends State<MyHomePage> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               ElevatedButton(
-                                onPressed: () {},
-                                child: Padding(
+                                onPressed: () {
+                                  setState(() {
+                                    weight++;
+                                  });
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  shape: const CircleBorder(),
+                                ),
+                                child: const Padding(
                                   padding: EdgeInsets.all(3),
                                   child: Text(
                                     '+',
@@ -176,13 +207,17 @@ class _MyHomePageState extends State<MyHomePage> {
                                     ),
                                   ),
                                 ),
-                                style: ElevatedButton.styleFrom(
-                                  shape: CircleBorder(),
-                                ),
                               ),
                               ElevatedButton(
-                                onPressed: () {},
-                                child: Padding(
+                                onPressed: () {
+                                  setState(() {
+                                    weight--;
+                                  });
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  shape: const CircleBorder(),
+                                ),
+                                child: const Padding(
                                   padding: EdgeInsets.all(3),
                                   child: Text(
                                     '-',
@@ -192,9 +227,6 @@ class _MyHomePageState extends State<MyHomePage> {
                                     ),
                                   ),
                                 ),
-                                style: ElevatedButton.styleFrom(
-                                  shape: CircleBorder(),
-                                ),
                               ),
                             ],
                           ),
@@ -202,7 +234,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 22,
                   ),
                   Expanded(
@@ -217,7 +249,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         children: [
                           Text('Age'.toUpperCase()),
                           Text(
-                            '60',
+                            age.toString(),
                             style: TextStyle(
                               fontSize: 40,
                               fontWeight: FontWeight.bold,
@@ -227,8 +259,15 @@ class _MyHomePageState extends State<MyHomePage> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               ElevatedButton(
-                                onPressed: () {},
-                                child: Padding(
+                                onPressed: () {
+                                  setState(() {
+                                    age++;
+                                  });
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  shape: const CircleBorder(),
+                                ),
+                                child: const Padding(
                                   padding: EdgeInsets.all(3),
                                   child: Text(
                                     '+',
@@ -238,13 +277,17 @@ class _MyHomePageState extends State<MyHomePage> {
                                     ),
                                   ),
                                 ),
-                                style: ElevatedButton.styleFrom(
-                                  shape: CircleBorder(),
-                                ),
                               ),
                               ElevatedButton(
-                                onPressed: () {},
-                                child: Padding(
+                                onPressed: () {
+                                  setState(() {
+                                    age--;
+                                  });
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  shape: const CircleBorder(),
+                                ),
+                                child: const Padding(
                                   padding: EdgeInsets.all(3),
                                   child: Text(
                                     '-',
@@ -253,9 +296,6 @@ class _MyHomePageState extends State<MyHomePage> {
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
-                                ),
-                                style: ElevatedButton.styleFrom(
-                                  shape: CircleBorder(),
                                 ),
                               ),
                             ],
@@ -279,38 +319,47 @@ class _MyHomePageState extends State<MyHomePage> {
     required IconData icon,
     required String text,
     required Color color,
+    required Function() onTap,
   }) {
     return Expanded(
       child: GestureDetector(
-          child: Container(
-            decoration: BoxDecoration(
-              color: color,
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                FaIcon(
-                  icon,
-                  size: 60,
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 18.0),
-                  child: Text(text),
-                ),
-              ],
-            ),
+        onTap: onTap,
+        child: Container(
+          decoration: BoxDecoration(
+            color: color,
+            borderRadius: BorderRadius.circular(10),
           ),
-          /* style: ElevatedButton.styleFrom(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              FaIcon(
+                icon,
+                size: 60,
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 18.0),
+                child: Text(text),
+              ),
+            ],
+          ),
+        ),
+        /* style: ElevatedButton.styleFrom(
             backgroundColor: Theme.of(context).primaryColor,
             fixedSize: const Size(double.infinity, 270),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(30),
             ),
           ), */
-          onTap: () {
-            print("Pressed");
-          }),
+      ),
     );
   }
+}
+
+enum Jynys { erkek, ayal }
+
+enum Tus {
+  ak,
+  kara,
+  kok,
+  tigibu,
 }
