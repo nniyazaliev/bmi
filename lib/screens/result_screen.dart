@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 
-class ResultPage extends StatefulWidget {
+class ResultScreen extends StatefulWidget {
   final String result;
   final String description;
   final double data;
 
-  //const ResultPage({Key? key}) : super(key: key);
-  //const ResultPage({super.key});
-  const ResultPage({
+  const ResultScreen({
     required this.result,
     required this.description,
     required this.data,
@@ -15,10 +13,10 @@ class ResultPage extends StatefulWidget {
   });
 
   @override
-  State<ResultPage> createState() => _ResultPageState();
+  State<ResultScreen> createState() => _ResultScreenState();
 }
 
-class _ResultPageState extends State<ResultPage> {
+class _ResultScreenState extends State<ResultScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
