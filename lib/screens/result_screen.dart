@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+import 'package:bmi/widgets/custom_app_bar.dart';
+import 'package:bmi/widgets/custom_button.dart';
+
 class ResultScreen extends StatefulWidget {
   final String result;
   final String description;
@@ -20,6 +23,7 @@ class _ResultScreenState extends State<ResultScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: const CustomAppBar(height: 60, title: 'Results'),
       body: Center(
         child: Column(
           children: [
@@ -42,27 +46,7 @@ class _ResultScreenState extends State<ResultScreen> {
                 ],
               ),
             ),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.redAccent,
-                foregroundColor: Colors.white,
-                shadowColor: Colors.greenAccent,
-                shape: const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(
-                    Radius.zero,
-                  ),
-                ),
-                minimumSize: Size(
-                  MediaQuery.of(context).size.width,
-                  80,
-                ),
-              ),
-              onPressed: () {},
-              child: Text(
-                'ReCalculate'.toUpperCase(),
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-              ),
-            ),
+            CustomButton(onPressed: () {}, text: 'RECALCULATE'),
           ],
         ),
       ),
