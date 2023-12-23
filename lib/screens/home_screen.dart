@@ -1,4 +1,7 @@
+import 'package:bmi/models/client_home_model.dart';
+import 'package:bmi/providers/home/home_screen_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -11,23 +14,16 @@ import 'package:bmi/widgets/custom_app_bar.dart';
 import 'package:bmi/widgets/custom_button.dart';
 import 'package:bmi/widgets/gender_widget.dart';
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key}) : super(key: key);
-
-  @override
-  _HomeScreenState createState() => _HomeScreenState();
-}
-
-class _HomeScreenState extends State<HomeScreen> {
-  Gender _gender = Gender.male;
-  double height = 170;
-  int weight = 42;
-  int age = 15;
+class HomeScreen extends ConsumerWidget {
+  HomeScreen({Key? key}) : super(key: key);
 
   final _bmiServices = BmiServices();
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final clientHomeModel = ref.watch(homeScreenNotifierProvider);
+    final homeScreenNotifier = ref.read(homeScreenNotifierProvider.notifier);
+
     return Scaffold(
       appBar: const CustomAppBar(height: 60, title: 'BMI Calculator'),
       body: Center(
@@ -44,47 +40,43 @@ class _HomeScreenState extends State<HomeScreen> {
                         children: [
                           GenderWidget(
                               onTap: () {
-                                setState(() {
-                                  _gender = Gender.male;
-                                });
+                                homeScreenNotifier.changeGender(Gender.male);
                               },
                               icon: FontAwesomeIcons.mars,
                               text: 'Male'.toUpperCase(),
-                              color: _gender == Gender.male
+                              color: clientHomeModel.gender == Gender.male
                                   ? AppColors.activeColor
                                   : AppColors.inActiveColor),
                           const SizedBox(width: 22),
                           GenderWidget(
                               onTap: () {
-                                setState(() {
-                                  _gender = Gender.female;
-                                });
+                                homeScreenNotifier.changeGender(Gender.female);
                               },
                               icon: FontAwesomeIcons.venus,
                               text: 'Female'.toUpperCase(),
-                              color: _gender == Gender.female
+                              color: clientHomeModel.gender == Gender.female
                                   ? AppColors.activeColor
                                   : AppColors.inActiveColor),
                         ],
                       ),
                     ),
                     const SizedBox(height: 22),
-                    _buildSlider(context),
+                    _buildSlider(
+                      context: context,
+                      clientHomeModel: clientHomeModel,
+                      homeScreenNotifier: homeScreenNotifier,
+                    ),
                     const SizedBox(height: 22),
                     Row(
                       children: [
                         CustomAgeWeight(
                           text: 'WEIGHT',
-                          number: weight.toString(),
+                          number: clientHomeModel.weight.toString(),
                           increment: () {
-                            setState(() {
-                              weight++;
-                            });
+                            homeScreenNotifier.incrementWeight();
                           },
                           decrement: () {
-                            setState(() {
-                              weight--;
-                            });
+                            homeScreenNotifier.decrementWeight();
                           },
                         ),
                         const SizedBox(
@@ -92,16 +84,12 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                         CustomAgeWeight(
                           text: 'AGE',
-                          number: age.toString(),
+                          number: clientHomeModel.age.toString(),
                           increment: () {
-                            setState(() {
-                              age++;
-                            });
+                            homeScreenNotifier.incrementAge();
                           },
                           decrement: () {
-                            setState(() {
-                              age--;
-                            });
+                            homeScreenNotifier.decrementAge();
                           },
                         ),
                       ],
@@ -119,12 +107,17 @@ class _HomeScreenState extends State<HomeScreen> {
                   MaterialPageRoute(
                     builder: (context) {
                       return ResultScreen(
-                        result: _bmiServices.getResultText(weight, height),
-                        description:
-                            _bmiServices.getInterpretation(weight, height),
                         data: _bmiServices.calculate(
-                          weight,
-                          height,
+                          clientHomeModel.weight,
+                          clientHomeModel.height,
+                        ),
+                        description: _bmiServices.getInterpretation(
+                          clientHomeModel.weight,
+                          clientHomeModel.height,
+                        ),
+                        result: _bmiServices.getResultText(
+                          clientHomeModel.weight,
+                          clientHomeModel.height,
                         ),
                       );
                     },
@@ -138,7 +131,11 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget _buildSlider(BuildContext context) {
+  Widget _buildSlider({
+    required BuildContext context,
+    required ClientHomeModel clientHomeModel,
+    required HomeScreenNotifier homeScreenNotifier,
+  }) {
     return Container(
       height: 160,
       decoration: BoxDecoration(
@@ -155,7 +152,7 @@ class _HomeScreenState extends State<HomeScreen> {
             textBaseline: TextBaseline.alphabetic,
             children: [
               Text(
-                height.round().toString().toUpperCase(),
+                clientHomeModel.height.round().toString().toUpperCase(),
                 style: const TextStyle(
                   fontSize: 40,
                   fontWeight: FontWeight.bold,
@@ -178,13 +175,11 @@ class _HomeScreenState extends State<HomeScreen> {
               overlayShape: const RoundSliderOverlayShape(overlayRadius: 28.0),
             ),
             child: Slider(
-              value: height,
+              value: clientHomeModel.height,
               max: 250,
               min: 50,
               onChanged: (double value) {
-                setState(() {
-                  height = value;
-                });
+                homeScreenNotifier.changeHeight(value);
               },
             ),
           ),
