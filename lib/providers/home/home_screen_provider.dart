@@ -1,6 +1,7 @@
+import 'package:riverpod_annotation/riverpod_annotation.dart';
+
 import 'package:bmi/helpers/app_emuns.dart';
 import 'package:bmi/models/client_home_model.dart';
-import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'home_screen_provider.g.dart';
 
@@ -17,68 +18,68 @@ class HomeScreenNotifier extends _$HomeScreenNotifier {
   }
 
   void changeGender(Gender value) {
-    final clientHomeModel = ClientHomeModel(
+    state = ClientHomeModel(
       gender: value,
       height: state.height,
       weight: state.weight,
       age: state.age,
     );
-
-    state = clientHomeModel;
   }
 
   void changeHeight(double value) {
-    final clientHomeModel = ClientHomeModel(
+    state = ClientHomeModel(
       gender: state.gender,
       height: value,
       weight: state.weight,
       age: state.age,
     );
-
-    state = clientHomeModel;
   }
 
   void incrementWeight() {
-    final clientHomeModel = ClientHomeModel(
+    var latestWeight = state.weight;
+    latestWeight++;
+
+    state = ClientHomeModel(
       gender: state.gender,
       height: state.height,
-      weight: state.weight++,
+      weight: latestWeight,
       age: state.age,
     );
-
-    state = clientHomeModel;
   }
 
   void decrementWeight() {
-    final clientHomeModel = ClientHomeModel(
+    var latestWeight = state.weight;
+    latestWeight--;
+
+    state = ClientHomeModel(
       gender: state.gender,
       height: state.height,
-      weight: state.weight--,
+      weight: latestWeight,
       age: state.age,
     );
-
-    state = clientHomeModel;
   }
 
   void incrementAge() {
-    final clientHomeModel = ClientHomeModel(
+    var latestAge = state.age;
+    latestAge++;
+
+    state = ClientHomeModel(
       gender: state.gender,
       height: state.height,
       weight: state.weight,
-      age: state.age++,
+      age: latestAge,
     );
-
-    state = clientHomeModel;
   }
 
   void decrementAge() {
-    final clientHomeModel = ClientHomeModel(
+    var latestAge = state.age;
+    latestAge--;
+
+    state = ClientHomeModel(
       gender: state.gender,
       height: state.height,
       weight: state.weight,
-      age: state.age--,
+      age: latestAge,
     );
-
-    state = clientHomeModel;
   }
 }

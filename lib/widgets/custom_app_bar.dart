@@ -14,6 +14,7 @@ class CustomAppBar extends StatefulWidget implements PreferredSizeWidget {
   Size get preferredSize => Size.fromHeight(height);
 
   @override
+  // ignore: library_private_types_in_public_api
   _CustomAppBarState createState() => _CustomAppBarState();
 }
 
